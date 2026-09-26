@@ -1,0 +1,23 @@
+{
+  "name": "url-shortener",
+  "scripts": {
+    "dev": "bun run --hot src/index.ts",
+    "postinstall": "prisma skills sync || exit 0"
+  },
+  "dependencies": {
+    "@hono/zod-validator": "^0.9.1",
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "^7.10.0",
+    "dotenv": "^18.0.4",
+    "hono": "^4.13.9",
+    "nanoid": "^6.0.1",
+    "pg": "^8.23.0",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/pg": "^8.23.1",
+    "prisma": "^7.10.0",
+    "tsx": "^4.23.15"
+  }
+}
