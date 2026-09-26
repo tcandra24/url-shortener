@@ -4,12 +4,16 @@ import { nanoid } from "nanoid";
 import { prisma } from "./db";
 import { createUrlSchema, updateUrlSchema } from "./schema/url";
 
+import routes from "./routes";
+
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 
 const app = new Hono();
 app.use("*", logger());
 app.use("/api/*", cors());
+
+app.route("/api", routes);
 
 async function isUrlReachable(url: string) {
   try {
@@ -20,58 +24,58 @@ async function isUrlReachable(url: string) {
   }
 }
 
-app.get("/api/urls", async (c) => {
-  const page = Number(c.req.query("page") ?? "1");
-  const limit = Number(c.req.query("limit") ?? "1");
+// app.get("/api/urls", async (c) => {
+//   const page = Number(c.req.query("page") ?? "1");
+//   const limit = Number(c.req.query("limit") ?? "1");
 
-  const [urls, total] = await Promise.all([
-    prisma.url.findMany({
-      orderBy: { createdAt: "desc" },
-      skip: (page - 1) * limit,
-      take: limit,
-    }),
-    prisma.url.count(),
-  ]);
+//   const [urls, total] = await Promise.all([
+//     prisma.url.findMany({
+//       orderBy: { createdAt: "desc" },
+//       skip: (page - 1) * limit,
+//       take: limit,
+//     }),
+//     prisma.url.count(),
+//   ]);
 
-  return c.json({
-    success: true,
-    data: urls,
-    pagination: {
-      total,
-      page,
-      limit,
-      totalPages: Math.ceil(total / limit),
-    },
-  });
-});
+//   return c.json({
+//     success: true,
+//     data: urls,
+//     pagination: {
+//       total,
+//       page,
+//       limit,
+//       totalPages: Math.ceil(total / limit),
+//     },
+//   });
+// });
 
-app.put("/api/urls/:code", zValidator("json", updateUrlSchema), async (c) => {
-  const code = c.req.param("code");
-  const data = c.req.valid("json");
+// app.put("/api/urls/:code", zValidator("json", updateUrlSchema), async (c) => {
+//   const code = c.req.param("code");
+//   const data = c.req.valid("json");
 
-  const existing = await prisma.url.findUnique({ where: { shortCode: code } });
-  if (!existing) {
-    return c.json(
-      {
-        success: false,
-        message: "Not Found",
-      },
-      404,
-    );
-  }
+//   const existing = await prisma.url.findUnique({ where: { shortCode: code } });
+//   if (!existing) {
+//     return c.json(
+//       {
+//         success: false,
+//         message: "Not Found",
+//       },
+//       404,
+//     );
+//   }
 
-  const updated = await prisma.url.update({
-    where: {
-      shortCode: code,
-    },
-    data,
-  });
+//   const updated = await prisma.url.update({
+//     where: {
+//       shortCode: code,
+//     },
+//     data,
+//   });
 
-  return c.json({
-    success: true,
-    data: updated,
-  });
-});
+//   return c.json({
+//     success: true,
+//     data: updated,
+//   });
+// });
 
 app.post("/api/shorten", zValidator("json", createUrlSchema), async (c) => {
   const { originalUrl, customCode, expiresAt } = c.req.valid("json");
@@ -155,28 +159,28 @@ app.get("/:code", async (c) => {
   return c.redirect(url.originalUrl, 302);
 });
 
-app.get("/api/urls/:code/stats", async (c) => {
-  const code = c.req.param("code");
-  const url = await prisma.url.findUnique({
-    where: { shortCode: code },
-    select: { shortCode: true, clickCount: true, createdAt: true },
-  });
+// app.get("/api/urls/:code/stats", async (c) => {
+//   const code = c.req.param("code");
+//   const url = await prisma.url.findUnique({
+//     where: { shortCode: code },
+//     select: { shortCode: true, clickCount: true, createdAt: true },
+//   });
 
-  if (!url) return c.json({ success: false, message: "Not found" }, 404);
-  return c.json({ success: true, data: url });
-});
+//   if (!url) return c.json({ success: false, message: "Not found" }, 404);
+//   return c.json({ success: true, data: url });
+// });
 
-app.delete("/api/urls/:code", async (c) => {
-  const code = c.req.param("code");
-  const url = await prisma.url.findUnique({
-    where: { shortCode: code },
-    select: { shortCode: true, clickCount: true, createdAt: true },
-  });
+// app.delete("/api/urls/:code", async (c) => {
+//   const code = c.req.param("code");
+//   const url = await prisma.url.findUnique({
+//     where: { shortCode: code },
+//     select: { shortCode: true, clickCount: true, createdAt: true },
+//   });
 
-  if (!url) return c.json({ success: false, message: "Not found" }, 404);
+//   if (!url) return c.json({ success: false, message: "Not found" }, 404);
 
-  await prisma.url.delete({ where: { shortCode: code } });
-  return c.json({ success: true, message: "Link deleted successfully" });
-});
+//   await prisma.url.delete({ where: { shortCode: code } });
+//   return c.json({ success: true, message: "Link deleted successfully" });
+// });
 
 export default { fetch: app.fetch };
