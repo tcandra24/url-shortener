@@ -4,7 +4,12 @@ import { nanoid } from "nanoid";
 import { prisma } from "./db";
 import { createUrlSchema, updateUrlSchema } from "./schema/url";
 
+import { cors } from "hono/cors";
+import { logger } from "hono/logger";
+
 const app = new Hono();
+app.use("*", logger());
+app.use("/api/*", cors());
 
 async function isUrlReachable(url: string) {
   try {
