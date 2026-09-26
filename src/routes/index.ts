@@ -1,9 +1,9 @@
 import { Hono } from "hono";
 
-import urlRoute from "../modules/urls/url.route";
+import appRoute from "../modules/app.route";
 
 const routes = new Hono();
 
-routes.route("/urls", urlRoute);
+routes.route("/", appRoute);
 
 export default routes;
