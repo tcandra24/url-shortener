@@ -1,5 +1,5 @@
 import type { Context } from "hono";
-import { getDashboardData } from "./dashboard.service";
+import { getDashboardData } from "@/modules/dashboard/dashboard.service";
 
 export const index = async (c: Context) => {
   const [totalUrls, totalClicks, activeUrls, topUrls] = await getDashboardData();

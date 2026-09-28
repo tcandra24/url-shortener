@@ -1,5 +1,5 @@
 import type { Context } from "hono";
-import { countAccessClicks } from "./app.service";
+import { countAccessClicks } from "@/modules/app.service";
 
 export const show = async (c: Context) => {
   const code = c.req.param("code") as string;

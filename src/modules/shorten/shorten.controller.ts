@@ -1,6 +1,6 @@
 import type { Context } from "hono";
 import { nanoid } from "nanoid";
-import { createUrlService } from "./shorten.service";
+import { createUrlService } from "@/modules/shorten/shorten.service";
 
 export const store = async (c: Context) => {
   const { originalUrl, customCode, expiresAt } = c.req.valid("json");

@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 
-import appRoute from "../modules/app.route";
+import appRoute from "@/modules/app.route";
 
 const routes = new Hono();
 

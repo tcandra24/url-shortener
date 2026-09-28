@@ -1,5 +1,5 @@
-import { findByCode, createUrl } from "./shorten.repository";
-import { isUrlReachable } from "../../common/utils";
+import { findByCode, createUrl } from "@/modules/shorten/shorten.repository";
+import { isUrlReachable } from "@/common/utils";
 
 export const createUrlService = async (customCode: string, data: any) => {
   if (customCode) {

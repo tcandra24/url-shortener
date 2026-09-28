@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 
-import dashboardRoute from "../modules/dashboard/dashboard.route";
-import shortenRoute from "../modules/shorten/shorten.route";
-import urlRoute from "../modules/urls/url.route";
+import dashboardRoute from "@/modules/dashboard/dashboard.route";
+import shortenRoute from "@/modules/shorten/shorten.route";
+import urlRoute from "@/modules/urls/url.route";
 
 const routes = new Hono();
 

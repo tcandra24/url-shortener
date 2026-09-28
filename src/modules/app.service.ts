@@ -1,4 +1,4 @@
-import { createClick, findByCode, updateClickCount } from "./app.repository";
+import { createClick, findByCode, updateClickCount } from "@/modules/app.repository";
 
 export const countAccessClicks = async (code: string, data: any) => {
   const url = await findByCode(code);

@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { show } from "./app.controller";
+import { show } from "@/modules/app.controller";
 
 const app = new Hono();
 

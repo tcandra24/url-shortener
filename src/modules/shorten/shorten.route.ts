@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
-import { createUrlSchema } from "../../schema/url";
-import { store } from "./shorten.controller";
+import { createUrlSchema } from "@/schema/url";
+import { store } from "@/modules/shorten/shorten.controller";
 
 const shorten = new Hono();
 

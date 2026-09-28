@@ -1,11 +1,11 @@
 import { Hono } from "hono";
 
-import routes from "./routes";
-import apiRoutes from "./routes/api";
+import routes from "@/routes";
+import apiRoutes from "@/routes/api";
 
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
-import { apiRateLimiter } from "./common/middleware/rate-limit";
+import { apiRateLimiter } from "@/common/middleware/rate-limit";
 
 const app = new Hono();
 app.use("*", logger());

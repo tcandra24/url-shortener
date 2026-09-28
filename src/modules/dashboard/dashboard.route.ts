@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { index } from "./dashboard.controller";
+import { index } from "@/modules/dashboard/dashboard.controller";
 
 const dashboard = new Hono();
 
