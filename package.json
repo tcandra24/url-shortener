@@ -1,6 +1,7 @@
 {
   "name": "url-shortener",
   "scripts": {
+    "deploy": "prisma generate && wrangler deploy",
     "dev": "bun run --hot src/index.ts",
     "postinstall": "prisma skills sync || exit 0"
   },
