@@ -1,11 +1,16 @@
 import type { Context } from "hono";
-import { prisma } from "../db";
+import { countAccessClicks } from "./app.service";
 
 export const show = async (c: Context) => {
-  const code = c.req.param("code");
-  const url = await prisma.url.findUnique({ where: { shortCode: code } });
+  const code = c.req.param("code") as string;
 
-  if (!url || !url.isActive) {
+  const urlAccess = await countAccessClicks(code, {
+    ipAddress: c.req.header("x-forwarded-for"),
+    userAgent: c.req.header("user-agent"),
+    referer: c.req.header("referer"),
+  });
+
+  if (!urlAccess) {
     return c.json(
       {
         success: false,
@@ -15,28 +20,5 @@ export const show = async (c: Context) => {
     );
   }
 
-  if (url.expiresAt && new Date() > url.expiresAt) {
-    return c.json(
-      {
-        success: false,
-        message: "URL has expired",
-      },
-      410,
-    );
-  }
-
-  prisma.click
-    .create({
-      data: {
-        urlId: url.id,
-        ipAddress: c.req.header("x-forwarded-for"),
-        userAgent: c.req.header("user-agent"),
-        referer: c.req.header("referer"),
-      },
-    })
-    .then(() => {
-      prisma.url.update({ where: { id: url.id }, data: { clickCount: { increment: 1 } } });
-    });
-
-  return c.redirect(url.originalUrl, 302);
+  return c.redirect(urlAccess.originalUrl, 302);
 };
