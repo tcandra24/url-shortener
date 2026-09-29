@@ -3,7 +3,7 @@
   "scripts": {
     "start": "bun run src/index.ts",
     "dev": "bun run --hot src/index.ts",
-    "postinstall": "prisma skills sync || exit 0"
+    "postinstall": "bunx prisma generate"
   },
   "dependencies": {
     "@hono/zod-validator": "^0.9.1",
