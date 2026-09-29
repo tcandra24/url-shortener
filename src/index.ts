@@ -9,7 +9,7 @@ import { apiRateLimiter } from "@/common/middleware/rate-limit";
 
 const app = new Hono();
 app.use("*", logger());
-routes.use("*", apiRateLimiter);
+app.use("*", apiRateLimiter);
 
 app.use("/api/*", cors());
 

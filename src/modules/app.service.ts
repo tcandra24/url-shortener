@@ -14,7 +14,9 @@ export const countAccessClicks = async (code: string, data: any) => {
   createClick({
     urlId: url.id,
     ...data,
-  }).then(() => updateClickCount(url.id));
+  })
+    .then(() => updateClickCount(url.id))
+    .catch((err) => console.log(err));
 
   return url;
 };
